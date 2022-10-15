@@ -1,6 +1,9 @@
 using UnitiReservation.Core.Infrastructures;
 using UnitiReservation.Core.Infrastructures.Settings;
 using UnitiReservation.Core.Services.UnitService;
+using UnitiReservation.Core.Services.StatistiqueService;
+using UnitiReservation.Core.Services.ReservationService;
+using UnitiReservation.Core.Services.ActionsFilters;
 
 namespace UnitiReservation
 {
@@ -19,17 +22,20 @@ namespace UnitiReservation
             builder.Services.AddSwaggerGen();
 
             builder.Services.Configure<UnitiReservationDatabaseSettings>(builder.Configuration.GetSection("UnitiReservationDatabase"));
-            builder.Services.AddSingleton<IReservationDbContext, ReservationDbContext>();
-            builder.Services.AddSingleton<IUnitServices, UnitServices>();
+            builder.Services.AddScoped<IReservationDbContext, ReservationDbContext>();
+            builder.Services.AddScoped<IUnitServices, UnitServices>();
+            builder.Services.AddScoped<IStatistiqueService, StatistiqueService>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IsValidApiTokenService>();
+
+            builder.Services.AddCors(p => p.AddPolicy("corsapp", builder => builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()));
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseCors("corsapp");
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 

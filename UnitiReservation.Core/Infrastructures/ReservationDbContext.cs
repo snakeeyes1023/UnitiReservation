@@ -1,18 +1,18 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using UnitiReservation.Core.Infrastructures.Settings;
-using UnitiReservation.Core.Models;
+using UnitiReservation.Core.Models.Entities;
 
 namespace UnitiReservation.Core.Infrastructures
 {
     public class ReservationDbContext : IReservationDbContext
     {
-        private readonly Lazy<IMongoCollection<Reservation>> _Reservations;
-        public IMongoCollection<Reservation> Reservations { get { return _Reservations.Value; } }
-
-
         private readonly Lazy<IMongoCollection<Unit>> _Units;
         public IMongoCollection<Unit> Units { get { return _Units.Value; } }
+
+
+        private readonly Lazy<IMongoCollection<UserApiKey>> _UserApiKeys;
+        public IMongoCollection<UserApiKey> UserApiKeys { get { return _UserApiKeys.Value; } }
 
 
         private IMongoClient Client;
@@ -25,8 +25,8 @@ namespace UnitiReservation.Core.Infrastructures
 
             Database = Client.GetDatabase(reservationDbContext.Value.DatabaseName);
 
-            _Reservations = new Lazy<IMongoCollection<Reservation>> (() => Database.GetCollection<Reservation>("Reservations"));
             _Units = new Lazy<IMongoCollection<Unit>>(() => Database.GetCollection<Unit>("Units"));
+            _UserApiKeys = new Lazy<IMongoCollection<UserApiKey>>(() => Database.GetCollection<UserApiKey>("UserApiKeys"));
         }
     }
 }

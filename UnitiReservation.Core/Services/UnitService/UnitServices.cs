@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using UnitiReservation.Core.Infrastructures;
-using UnitiReservation.Core.Models;
+﻿using UnitiReservation.Core.Infrastructures;
 using MongoDB.Driver;
-using Microsoft.Extensions.Options;
-using System.Collections.Concurrent;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Intrinsics.X86;
+using System.Reflection.Metadata;
+using MongoDB.Bson;
+using UnitiReservation.Core.Models.Entities;
 
 namespace UnitiReservation.Core.Services.UnitService
 {
@@ -39,15 +30,16 @@ namespace UnitiReservation.Core.Services.UnitService
         /// <returns></returns>
         public async Task InsertUnit(Unit unit)
         {
-            ValidateUnit(unit);
+            var validationResult = unit.Validate();
+
+            if (!validationResult.Item1)
+            {
+                throw new ArgumentException("Erreur de validation", validationResult.Item2.ToString());
+            }
 
             await _DbContext.Units.InsertOneAsync(unit);
         }
 
-        private static void ValidateUnit(Unit unit)
-        {
-            
-        }
 
         /// <summary>
         /// 
@@ -56,6 +48,47 @@ namespace UnitiReservation.Core.Services.UnitService
         public async Task<IEnumerable<Unit>> GetFreeUnit()
         {
             return await _DbContext.Units.Find(x => x.Show).ToListAsync();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        public async Task UpdateUnit(Unit unit)
+        {
+            var filter = Builders<Unit>.Filter.Eq(x => x.Id, unit.Id);
+
+            var update = Builders<Unit>.Update
+                .Set(x => x, unit);
+           
+            await _DbContext.Units.UpdateOneAsync(filter, update);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        public async Task Delete(Unit unit)
+        {
+            await _DbContext.Units.DeleteOneAsync(x => x.Id == unit.Id);         
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Unit> GetById(string id)
+        {
+           return (await _DbContext.Units.FindAsync(x => x.Id == id)).FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<Unit>> GetBetween(decimal from, decimal to)
+        {
+            return await _DbContext.Units.Find(x => x.DisplayPricing > from && x.DisplayPricing < to).ToListAsync();
         }
     }
 }

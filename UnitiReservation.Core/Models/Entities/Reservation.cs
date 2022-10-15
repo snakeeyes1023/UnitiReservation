@@ -6,17 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using UnitiReservation.Core.Models.Interface;
+using UnitiReservation.Core.Models.Helper;
 
-namespace UnitiReservation.Core.Models
+namespace UnitiReservation.Core.Models.Entities
 {
-    public class Reservation
+    public class Reservation : ModelValidate<Reservation>, IHasId
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
-
-        [MinLength(10)]
-        public string UnitId { get; set; } = string.Empty;
 
         [Required]
         public decimal Price { get; set; }
@@ -26,6 +25,12 @@ namespace UnitiReservation.Core.Models
 
         public DateTime? EndDate { get; set; }
 
-        public bool IsEnded => EndDate == null || (EndDate.HasValue && EndDate.Value < DateTime.Now );
+        public bool IsEnded
+        {
+            get
+            {
+                return EndDate == null || EndDate.HasValue && EndDate.Value < DateTime.Now;
+            }
+        }
     }
 }
