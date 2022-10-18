@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UnitiReservation.Controllers;
-using UnitiReservation.Core.Models.CustomModels.Stats;
-using UnitiReservation.Core.Services.ActionsFilters;
-using UnitiReservation.Core.Services.StatistiqueService;
-using UnitiReservation.Core.Services.UnitService;
+using UnitiReservation.Core.Models.Stats;
+using UnitiReservation.Core.Services.Statistics;
 
 namespace UnitiReservation.Api.Controllers
 {
     [ApiController]
-    [Route("Stats/[Action]")]
+    [Route("[Controller]/[Action]")]
     public class StatsController : ControllerBase
     {
         private readonly ILogger<UnitsController> _logger;
@@ -22,7 +19,6 @@ namespace UnitiReservation.Api.Controllers
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(IsValidApiTokenService))]
         public AveragePriceByAvailable AveragePricePerUnitStatus([FromQuery] string apiKey)
         {
             try
@@ -36,7 +32,6 @@ namespace UnitiReservation.Api.Controllers
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(IsValidApiTokenService))]
         public TotalAvailablePerStatus TotalAvailablePerUnitStatus([FromQuery] string apiKey)
         {
             try
