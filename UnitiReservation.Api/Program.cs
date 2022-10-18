@@ -1,11 +1,9 @@
-using UnitiReservation.Core.Infrastructures;
 using UnitiReservation.Core.Infrastructures.Settings;
-using UnitiReservation.Core.Services.UnitService;
-using UnitiReservation.Core.Services.StatistiqueService;
-using UnitiReservation.Core.Services.ReservationService;
-using UnitiReservation.Core.Services.ActionsFilters;
+using UnitiReservation.Core.Infrastructures.Middleware;
+using UnitiReservation.Core.Infrastructures.Configurations.IoC;
+using UnitiReservation.Core.Infrastructures.Configurations.Authentication;
 
-namespace UnitiReservation
+namespace UnitiReservation.Api
 {
     public class Program
     {
@@ -13,20 +11,19 @@ namespace UnitiReservation
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            #region SWAGGER
+            //todo : ENLEVER AU PREMIER PUBLISH
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            #endregion
 
-            builder.Services.Configure<UnitiReservationDatabaseSettings>(builder.Configuration.GetSection("UnitiReservationDatabase"));
-            builder.Services.AddScoped<IReservationDbContext, ReservationDbContext>();
-            builder.Services.AddScoped<IUnitServices, UnitServices>();
-            builder.Services.AddScoped<IStatistiqueService, StatistiqueService>();
-            builder.Services.AddScoped<IReservationService, ReservationService>();
-            builder.Services.AddScoped<IsValidApiTokenService>();
+            builder.Services.ConfigureIOC();
+
+            ConfigureDatabases(builder);
+
+            builder.Services.ConfigureJwt(builder.Configuration);
 
             builder.Services.AddCors(p => p.AddPolicy("corsapp", builder => builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()));
 
@@ -34,18 +31,26 @@ namespace UnitiReservation
 
             app.UseCors("corsapp");
 
+            #region SWAGGER
+            //todo : ENLEVER AU PREMIER PUBLISH
             app.UseSwagger();
             app.UseSwaggerUI();
+            #endregion
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
+            app.UseMiddleware<RequestLogging>();
 
             app.MapControllers();
 
             app.Run();
         }
 
+        private static void ConfigureDatabases(WebApplicationBuilder builder)
+        {
+            builder.Services.Configure<UnitiReservationDatabaseSettings>(builder.Configuration.GetSection("UnitiReservationDatabase"));
+        }
     }
 }

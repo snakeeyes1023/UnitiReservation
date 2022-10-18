@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using UnitiReservation.Core.Models.Entities;
-using UnitiReservation.Core.Services.UnitService;
+using UnitiReservation.Core.Infrastructures.Data.Entities;
+using UnitiReservation.Core.Services.Units;
 
-namespace UnitiReservation.Controllers
+namespace UnitiReservation.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -10,9 +10,9 @@ namespace UnitiReservation.Controllers
     {
 
         private readonly ILogger<UnitsController> _logger;
-        private readonly IUnitServices _unitService;
+        private readonly IUnitService _unitService;
 
-        public UnitsController(ILogger<UnitsController> logger, IUnitServices unitService)
+        public UnitsController(ILogger<UnitsController> logger, IUnitService unitService)
         {
             _logger = logger;
             _unitService = unitService;
@@ -21,7 +21,7 @@ namespace UnitiReservation.Controllers
         #region GET
 
         [HttpGet]
-        public async Task<IEnumerable<Unit>> Get()
+        public async Task<IEnumerable<UnitEntity>> Get()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace UnitiReservation.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<Unit> Get([FromRoute] string id)
+        public async Task<UnitEntity> Get([FromRoute] string id)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace UnitiReservation.Controllers
 
         [HttpGet]
         [Route("{from}/{to}")]
-        public async Task<IEnumerable<Unit>> Get([FromRoute] decimal from, [FromRoute] decimal to)
+        public async Task<IEnumerable<UnitEntity>> Get([FromRoute] decimal from, [FromRoute] decimal to)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace UnitiReservation.Controllers
         #region POST
 
         [HttpPost]
-        public async Task<IActionResult> Post(Unit unit)
+        public async Task<IActionResult> Post(UnitEntity unit)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace UnitiReservation.Controllers
         #region PUT
 
         [HttpPut]
-        public async Task<IActionResult> Put(Unit unit)
+        public async Task<IActionResult> Put(UnitEntity unit)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace UnitiReservation.Controllers
         #region DELETE
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(Unit unit)
+        public async Task<IActionResult> Delete(UnitEntity unit)
         {
             try
             {

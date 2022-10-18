@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using UnitiReservation.Controllers;
-using UnitiReservation.Core.Models.Entities;
-using UnitiReservation.Core.Services.ReservationService;
-using UnitiReservation.Core.Services.UnitService;
+using UnitiReservation.Core.Infrastructures.Data.Entities;
+using UnitiReservation.Core.Services.Reservations;
 
 namespace UnitiReservation.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]/")]
     public class ReservationsController : ControllerBase
     {
@@ -22,7 +22,7 @@ namespace UnitiReservation.Api.Controllers
 
         [HttpPost]
         [Route("{id}")]
-        public async Task<IActionResult> Post([FromRoute] string id, [FromBody] Reservation reservation)
+        public async Task<IActionResult> Post([FromRoute] string id, [FromBody] ReservationEntity reservation)
         {
             try
             {
