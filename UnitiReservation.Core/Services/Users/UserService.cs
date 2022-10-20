@@ -29,7 +29,7 @@ namespace UnitiReservation.Core.Services.Users
         }
         public async Task<Tokens?> Authenticate(UserAuthForm user)
         {
-            IAuthUser userEntity = await _dbContext.Users.Find(x => x.Username == user.Username).FirstOrDefaultAsync();
+            IAuthUser userEntity = await _dbContext.Users.Find(x => x.Username == user.UsernameOrEmail || x.Email == user.UsernameOrEmail).FirstOrDefaultAsync();
 
             if (userEntity == null || !userEntity.Verify(user.Password))
             {
@@ -46,7 +46,8 @@ namespace UnitiReservation.Core.Services.Users
             {
                 Username = user.Username,
                 Firstname = user.Firstname,
-                Lastname = user.Lastname
+                Lastname = user.Lastname,
+                Email = user.Email           
             };
 
             userEntity.EncryptPassword(user.Password);
@@ -71,7 +72,7 @@ namespace UnitiReservation.Core.Services.Users
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new Tokens { Token = tokenHandler.WriteToken(token) };
+            return new Tokens { Token = tokenHandler.WriteToken(token), UserName = userEntity.Username };
         }
     }
 }

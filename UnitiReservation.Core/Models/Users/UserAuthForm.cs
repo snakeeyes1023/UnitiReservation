@@ -8,7 +8,7 @@ namespace UnitiReservation.Core.Models.Auth
 {
     public class UserAuthForm
     {
-        public string Username { get; set; }
+        public string UsernameOrEmail { get; set; }
         public string Password { get; set; }
     }
 }

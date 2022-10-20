@@ -15,6 +15,9 @@ namespace UnitiReservation.Core.Infrastructures.Data.Entities
     public class UserEntity : Entity, IAuthUser
     {
         [Required(ErrorMessage = AttributeLocalisation.REQUIRED)]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = AttributeLocalisation.REQUIRED)]
         public string Username { get; set; } = string.Empty;
 
         [Required(ErrorMessage = AttributeLocalisation.REQUIRED)]
