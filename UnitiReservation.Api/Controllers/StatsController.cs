@@ -21,27 +21,13 @@ namespace UnitiReservation.Api.Controllers
         [HttpGet]
         public AveragePriceByAvailable AveragePricePerUnitStatus([FromQuery] string apiKey)
         {
-            try
-            {
-                return _statsService.AveragePricePerUnitStatus();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _statsService.AveragePricePerUnitStatus();
         }
 
         [HttpGet]
         public TotalAvailablePerStatus TotalAvailablePerUnitStatus([FromQuery] string apiKey)
         {
-            try
-            {
-                return _statsService.TotalAvailablePerUnitStatus();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _statsService.TotalAvailablePerUnitStatus();
         }
     }
 }

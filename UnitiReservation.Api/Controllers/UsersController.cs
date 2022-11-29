@@ -22,31 +22,39 @@ namespace UnitiReservation.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Authenticate(UserAuthForm auth)
         {
-            var token = await _userService.Authenticate(auth);
-
-            if (token == null)
+            if (ModelState.IsValid)
             {
-                return Unauthorized();
+                var token = await _userService.Authenticate(auth);
+
+                if (token == null)
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(token);
             }
 
-            return Ok(token);
+            return BadRequest(ModelState);
         }
 
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateAccount(UserCreationForm user)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await _userService.CreateAccount(user);
+                try
+                {
+                    await _userService.CreateAccount(user);
 
-                return Ok();
+                    return Ok();
+                }
+                catch (Exception)
+                {
+                    return BadRequest();
+                }
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return BadRequest(ModelState);
         }
     }
 }

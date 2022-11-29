@@ -11,11 +11,11 @@ namespace UnitiReservation.Core.Services.Units
     {
         Task<IEnumerable<UnitEntity>> GetAllUnits();
 
-        Task InsertUnit(UnitEntity unit);
+        Task<UnitEntity> InsertUnit(UnitEntity unit);
 
         Task<IEnumerable<UnitEntity>> GetFreeUnit();
 
-        Task UpdateUnit(UnitEntity unit);
+        Task<UnitEntity> UpdateUnit(UnitEntity unit);
 
         Task Delete(UnitEntity unit);
 

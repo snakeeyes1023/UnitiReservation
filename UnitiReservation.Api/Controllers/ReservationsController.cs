@@ -24,17 +24,20 @@ namespace UnitiReservation.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Post([FromRoute] string id, [FromBody] ReservationEntity reservation)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await _reservationService.InsertReservation(id, reservation);
-                return Ok();
+                try
+                {
+                    await _reservationService.InsertReservation(id, reservation);
+                    return Ok();
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Impossible de créer la réservation");
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogInformation("Erreur d'insertion d'une réservation", ex);
 
-                return BadRequest("Impossible de créer la réservation");
-            }
+            return BadRequest(ModelState);
         }
     }
 }

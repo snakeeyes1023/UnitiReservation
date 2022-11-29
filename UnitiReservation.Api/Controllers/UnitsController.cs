@@ -21,47 +21,35 @@ namespace UnitiReservation.Api.Controllers
         #region GET
 
         [HttpGet]
-        public async Task<IEnumerable<UnitEntity>> Get()
+        public async Task<IActionResult> Get()
         {
-            try
-            {
-                return await _unitService.GetAllUnits();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return Ok(await _unitService.GetAllUnits());
         }
 
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<UnitEntity> Get([FromRoute] string id)
+        public async Task<IActionResult> Get([FromRoute] string id)
         {
-            try
-            {
-                return await _unitService.GetById(id);
-            }
-            catch (Exception)
-            {
+            UnitEntity unitEntity = await _unitService.GetById(id);
 
-                throw;
+            if (unitEntity == null)
+            {
+                return NotFound();
             }
+
+            return Ok(unitEntity);
         }
 
         [HttpGet]
         [Route("{from}/{to}")]
-        public async Task<IEnumerable<UnitEntity>> Get([FromRoute] decimal from, [FromRoute] decimal to)
+        public async Task<IActionResult> Get([FromRoute] decimal from, [FromRoute] decimal to)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return await _unitService.GetBetween(from, to);
+                return Ok(await _unitService.GetBetween(from, to));
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return BadRequest(ModelState);
         }
 
         #endregion
@@ -71,15 +59,18 @@ namespace UnitiReservation.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(UnitEntity unit)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await _unitService.InsertUnit(unit);
-                return Ok();
+                try
+                {
+                    return Ok(await _unitService.InsertUnit(unit));
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Impossible d'insérer l'unité");
+                }
             }
-            catch (Exception)
-            {
-                return BadRequest("Impossible d'insérer l'unité");
-            }
+            return BadRequest(ModelState);
         }
 
         #endregion
@@ -87,17 +78,23 @@ namespace UnitiReservation.Api.Controllers
         #region PUT
 
         [HttpPut]
-        public async Task<IActionResult> Put(UnitEntity unit)
+        [Route("{id}")]
+        public async Task<IActionResult> Put([FromQuery] string id, [FromBody] UnitEntity unit)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await _unitService.UpdateUnit(unit);
-                return Ok();
+                try
+                {
+                    unit.Id = id;
+                    
+                    return Ok(await _unitService.UpdateUnit(unit));
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Impossible de modifier l'unité");
+                }
             }
-            catch (Exception)
-            {
-                return BadRequest("Impossible de modifier l'unité");
-            }
+            return BadRequest(ModelState);
         }
 
         #endregion
@@ -107,15 +104,20 @@ namespace UnitiReservation.Api.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(UnitEntity unit)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await _unitService.Delete(unit);
-                return Ok();
+                try
+                {
+                    await _unitService.Delete(unit);
+
+                    return Ok();
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Impossible de supprimer l'unité");
+                }
             }
-            catch (Exception)
-            {
-                return BadRequest("Impossible de supprimer l'unité");
-            }
+            return BadRequest(ModelState);
         }
 
         #endregion

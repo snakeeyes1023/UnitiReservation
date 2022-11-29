@@ -28,9 +28,11 @@ namespace UnitiReservation.Core.Services.Units
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
-        public async Task InsertUnit(UnitEntity unit)
+        public async Task<UnitEntity> InsertUnit(UnitEntity unit)
         {
             await _DbContext.Units.InsertOneAsync(unit);
+
+            return unit;
         }
 
 
@@ -49,7 +51,7 @@ namespace UnitiReservation.Core.Services.Units
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
-        public async Task UpdateUnit(UnitEntity unit)
+        public async Task<UnitEntity> UpdateUnit(UnitEntity unit)
         {
             var filter = Builders<UnitEntity>.Filter.Eq(x => x.Id, unit.Id);
 
@@ -57,6 +59,8 @@ namespace UnitiReservation.Core.Services.Units
                 .Set(x => x, unit);
 
             await _DbContext.Units.UpdateOneAsync(filter, update);
+
+            return unit;
         }
 
         /// <summary>

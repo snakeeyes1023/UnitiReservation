@@ -42,6 +42,15 @@ namespace UnitiReservation.Api
             app.UseAuthorization();
 
             app.UseMiddleware<RequestLogging>();
+            
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/error-development");
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
 
             app.MapControllers();
 
