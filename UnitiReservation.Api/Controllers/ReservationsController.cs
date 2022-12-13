@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UnitiReservation.Core.Infrastructures.Data.Entities;
+using UnitiReservation.Core.Models.Reservation;
 using UnitiReservation.Core.Services.Reservations;
 
 namespace UnitiReservation.Api.Controllers
 {
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("[controller]/")]
     public class ReservationsController : ControllerBase
     {
@@ -22,7 +24,7 @@ namespace UnitiReservation.Api.Controllers
 
         [HttpPost]
         [Route("{id}")]
-        public async Task<IActionResult> Post([FromRoute] string id, [FromBody] ReservationEntity reservation)
+        public async Task<IActionResult> Post([FromRoute] string id, [FromBody] ReservationModel reservation)
         {
             if (ModelState.IsValid)
             {

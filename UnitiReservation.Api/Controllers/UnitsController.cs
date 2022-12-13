@@ -79,7 +79,7 @@ namespace UnitiReservation.Api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Put([FromQuery] string id, [FromBody] UnitEntity unit)
+        public async Task<IActionResult> Put([FromRoute] string id, [FromBody] UnitEntity unit)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace UnitiReservation.Api.Controllers
                     
                     return Ok(await _unitService.UpdateUnit(unit));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return BadRequest("Impossible de modifier l'unité");
                 }
@@ -102,13 +102,14 @@ namespace UnitiReservation.Api.Controllers
         #region DELETE
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(UnitEntity unit)
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(string id)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _unitService.Delete(unit);
+                    await _unitService.Delete(id);
 
                     return Ok();
                 }

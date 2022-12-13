@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnitiReservation.Core.Infrastructures.Data.DbContext;
 using UnitiReservation.Core.Infrastructures.Data.Entities;
+using UnitiReservation.Core.Models.Reservation;
 
 namespace UnitiReservation.Core.Services.Reservations
 {
@@ -17,14 +18,30 @@ namespace UnitiReservation.Core.Services.Reservations
             _DbContext = dbContext;
         }
 
-        public async Task InsertReservation(string id, ReservationEntity reservation)
+        public async Task InsertReservation(string id, ReservationModel reservation)
         {
-            var filter = Builders<UnitEntity>.Filter.Eq(x => x.Id, id);
+            UnitEntity unit = await _DbContext.Units.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-            var update = Builders<UnitEntity>.Update
-                .AddToSet(x => x.Reservations, reservation);
+            if (unit != null)
+            {
+                var filter = Builders<UnitEntity>.Filter.Eq(x => x.Id, id);
 
-            await _DbContext.Units.UpdateOneAsync(filter, update);
+                var reservationEntity = new ReservationEntity
+                {
+                    StartDate = reservation.FromDate,
+                    EndDate = reservation.ToDate,
+                    Price = unit.DisplayPricing,
+                };
+
+                var update = Builders<UnitEntity>.Update
+                    .AddToSet(x => x.Reservations, reservationEntity);
+
+                await _DbContext.Units.UpdateOneAsync(filter, update);
+            }
+            else
+            {
+                throw new InvalidOperationException("Unité non trouvée");
+            }
         }
     }
 }

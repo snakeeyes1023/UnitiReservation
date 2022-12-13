@@ -3,6 +3,7 @@ using System.Reflection.Metadata;
 using MongoDB.Bson;
 using UnitiReservation.Core.Infrastructures.Data.DbContext;
 using UnitiReservation.Core.Infrastructures.Data.Entities;
+using UnitiReservation.Core.Helpers.Extensions;
 
 namespace UnitiReservation.Core.Services.Units
 {
@@ -55,22 +56,23 @@ namespace UnitiReservation.Core.Services.Units
         {
             var filter = Builders<UnitEntity>.Filter.Eq(x => x.Id, unit.Id);
 
-            var update = Builders<UnitEntity>.Update
-                .Set(x => x, unit);
+            var update = Builders<UnitEntity>.Update.ApplyMultiFields(unit);
 
             await _DbContext.Units.UpdateOneAsync(filter, update);
 
             return unit;
         }
 
+
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
-        public async Task Delete(UnitEntity unit)
+        public async Task Delete(string unitId)
         {
-            await _DbContext.Units.DeleteOneAsync(x => x.Id == unit.Id);
+            await _DbContext.Units.DeleteOneAsync(x => x.Id == unitId);
         }
 
         /// <summary>

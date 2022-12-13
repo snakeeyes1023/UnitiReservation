@@ -17,7 +17,7 @@ namespace UnitiReservation.Core.Services.Units
 
         Task<UnitEntity> UpdateUnit(UnitEntity unit);
 
-        Task Delete(UnitEntity unit);
+        Task Delete(string unitId);
 
         Task<UnitEntity> GetById(string id);
 
