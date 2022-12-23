@@ -7,9 +7,8 @@ using UnitiReservation.Core.Infrastructures.Data.Enums;
 
 namespace UnitiReservation.Core.Models.Stats
 {
-    public class TotalAvailablePerStatus
+    public class AverageReservationRange
     {
-        public List<UnitType> Types { get; set; }
-        public int Total { get; set; }
+        public double Days { get; set; }
     }
 }

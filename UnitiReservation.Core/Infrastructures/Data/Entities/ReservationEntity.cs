@@ -35,5 +35,16 @@ namespace UnitiReservation.Core.Infrastructures.Data.Entities
                 return StartDate <= DateTime.Now && !IsEnded;
             }
         }
+
+        /// <summary>
+        /// Retroune le nombre total de jour de réservation
+        /// </summary>
+        /// <returns></returns>
+        public double TotalDays()
+        {
+            DateTime endDate = EndDate ?? DateTime.Now;
+
+            return (endDate - StartDate).TotalDays;
+        }
     }
 }

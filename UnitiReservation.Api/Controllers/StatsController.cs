@@ -25,9 +25,9 @@ namespace UnitiReservation.Api.Controllers
         }
 
         [HttpGet]
-        public TotalAvailablePerStatus TotalAvailablePerUnitStatus()
+        public async Task<IActionResult> AverageReservationTotalDays()
         {
-            return _statsService.TotalAvailablePerUnitStatus();
+            return Ok(await _statsService.GetAverageTimeReservation());
         }
     }
 }

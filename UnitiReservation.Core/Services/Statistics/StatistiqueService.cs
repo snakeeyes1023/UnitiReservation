@@ -33,14 +33,21 @@ namespace UnitiReservation.Core.Services.Statistics
             return totalVacantion;
         }
 
-        public TotalAvailablePerStatus TotalAvailablePerUnitStatus()
+        public async Task<AverageReservationRange> GetAverageTimeReservation()
         {
-            return _DbContext.Units.Aggregate().Group(x => x.Tags, r =>
-             new TotalAvailablePerStatus
-             {
-                 Types = r.Key,
-                 Total = r.Sum(x => x.Quantity)
-             }).FirstOrDefault();
+            var units = await _DbContext.Units.Find(x => true).ToListAsync();
+
+            double averageTimeReservation = 0;
+
+            foreach (var unit in units)
+            {
+                averageTimeReservation += unit.Reservations.Average(x => x.TotalDays());
+            }
+
+            return new AverageReservationRange()
+            {
+                Days = averageTimeReservation
+            };
         }
     }
 }
