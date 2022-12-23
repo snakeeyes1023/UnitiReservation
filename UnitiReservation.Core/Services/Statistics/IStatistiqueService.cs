@@ -9,7 +9,7 @@ namespace UnitiReservation.Core.Services.Statistics
 {
     public interface IStatistiqueService
     {
-        AveragePriceByAvailable AveragePricePerUnitStatus();
+        Task<TotalVacation> GetPourcentageVacation();
         TotalAvailablePerStatus TotalAvailablePerUnitStatus();
     }
 }

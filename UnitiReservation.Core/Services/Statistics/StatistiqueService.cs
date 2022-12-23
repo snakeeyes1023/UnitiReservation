@@ -18,14 +18,19 @@ namespace UnitiReservation.Core.Services.Statistics
             _DbContext = dbContext;
         }
 
-        public AveragePriceByAvailable AveragePricePerUnitStatus()
+        public async Task<TotalVacation> GetPourcentageVacation()
         {
-            return _DbContext.Units.Aggregate().Group(x => x.Show, r =>
-            new AveragePriceByAvailable
+            TotalVacation totalVacantion = new();
+
+            var units = await _DbContext.Units.Find(x => true).ToListAsync();
+
+            foreach (var unit in units)
             {
-                Available = r.Key,
-                AveragePrice = r.Average(x => x.DisplayPricing)
-            }).FirstOrDefault();
+                totalVacantion.TotalUnits += unit.Quantity;
+                totalVacantion.TotalUsed += unit.TotalInUsed;
+            }
+
+            return totalVacantion;
         }
 
         public TotalAvailablePerStatus TotalAvailablePerUnitStatus()
@@ -39,5 +44,3 @@ namespace UnitiReservation.Core.Services.Statistics
         }
     }
 }
-
-//validation regex 2

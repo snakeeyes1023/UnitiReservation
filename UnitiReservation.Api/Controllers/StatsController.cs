@@ -19,13 +19,13 @@ namespace UnitiReservation.Api.Controllers
         }
 
         [HttpGet]
-        public AveragePriceByAvailable AveragePricePerUnitStatus([FromQuery] string apiKey)
+        public async Task<IActionResult> TotalVacation()
         {
-            return _statsService.AveragePricePerUnitStatus();
+            return Ok(await _statsService.GetPourcentageVacation());
         }
 
         [HttpGet]
-        public TotalAvailablePerStatus TotalAvailablePerUnitStatus([FromQuery] string apiKey)
+        public TotalAvailablePerStatus TotalAvailablePerUnitStatus()
         {
             return _statsService.TotalAvailablePerUnitStatus();
         }

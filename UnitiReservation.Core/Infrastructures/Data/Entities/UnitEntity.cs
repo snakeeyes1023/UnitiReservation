@@ -68,6 +68,10 @@ namespace UnitiReservation.Core.Infrastructures.Data.Entities
             }
         }
 
+        public int TotalInUsed => Reservations.Count(x => x.CurrentlyInReservation);
+
+        public int TotalAvailable => Quantity - TotalInUsed;
+
         #endregion
     }
 }

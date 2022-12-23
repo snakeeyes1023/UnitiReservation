@@ -27,5 +27,13 @@ namespace UnitiReservation.Core.Infrastructures.Data.Entities
                 return EndDate == null || EndDate.HasValue && EndDate.Value < DateTime.Now;
             }
         }
+
+        public bool CurrentlyInReservation
+        {
+            get
+            {
+                return StartDate >= DateTime.Now && !IsEnded;
+            }
+        }
     }
 }
