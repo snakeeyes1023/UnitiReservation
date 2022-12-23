@@ -14,19 +14,19 @@ La base de données est gérée par MongoDB. Il faut donc installer MongoDB sur 
 
 Regroupe les informations de l'utilisateur avec c'est information d'authentification.
 
-![image](dev/images/TableUser.png)
+![image](Dev/images/TableUser.png)
 
 ### Table Unit
 
 Regroupe les informations d'un local. (Inclus les réservations)
 
-![image](dev/images/TableUnit.png)
+![image](Dev/images/TableUnit.png)
 
 ### Table RequestLogs
 
 Regroupe tous les requêtes effectuées sur l'application.
 
-![image](dev/images/TableRequestLogs.png)
+![image](Dev/images/TableRequestLogs.png)
 
 
 #### Importer les données
@@ -34,12 +34,12 @@ Regroupe tous les requêtes effectuées sur l'application.
 ##### Collection Users
 
 1. Créer une collection nommée "Users" dans la base de données
-2. Importer le fichier "dev/Units.json" dans la collection "Users"
+2. Importer le fichier "Dev/Units.json" dans la collection "Users"
 
 ##### Collection Units
 
 1. Créer une collection nommée "Units" dans la base de données
-2. Importer le fichier "dev/Units.json" dans la collection "Units"
+2. Importer le fichier "Dev/Units.json" dans la collection "Units"
 
 ## MongoDB
 - user : jcote
