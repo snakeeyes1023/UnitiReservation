@@ -24,7 +24,7 @@ namespace UnitiReservation.Core.Infrastructures.Data.Entities
         {
             get
             {
-                return EndDate == null || EndDate.HasValue && EndDate.Value < DateTime.Now;
+                return EndDate != null && (EndDate.HasValue && EndDate.Value < DateTime.Now);
             }
         }
 
@@ -32,7 +32,7 @@ namespace UnitiReservation.Core.Infrastructures.Data.Entities
         {
             get
             {
-                return StartDate >= DateTime.Now && !IsEnded;
+                return StartDate <= DateTime.Now && !IsEnded;
             }
         }
     }

@@ -121,6 +121,26 @@ namespace UnitiReservation.Api.Controllers
             return BadRequest(ModelState);
         }
 
+        [HttpPatch]
+        [Route("{id}/[action]/{newVisibility}")]
+        public async Task<IActionResult> ChangeVisibility([FromRoute] string id, [FromRoute] bool newVisibility)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _unitService.UpdateUnitVisibilty(id, newVisibility);
+
+                    return Ok();
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Impossible de supprimer l'unité");
+                }
+            }
+            return BadRequest(ModelState);
+        }
+
         #endregion
     }
 }

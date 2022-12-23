@@ -22,5 +22,7 @@ namespace UnitiReservation.Core.Services.Units
         Task<UnitEntity> GetById(string id);
 
         Task<IEnumerable<UnitEntity>> GetBetween(decimal from, decimal to);
+
+        Task UpdateUnitVisibilty(string id, bool newVisibilty);
     }
 }

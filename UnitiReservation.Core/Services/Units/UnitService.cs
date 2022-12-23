@@ -87,7 +87,16 @@ namespace UnitiReservation.Core.Services.Units
 
         public async Task<IEnumerable<UnitEntity>> GetBetween(decimal from, decimal to)
         {
-            return await _DbContext.Units.Find(x => x.DisplayPricing > from && x.DisplayPricing < to).ToListAsync();
+            return await _DbContext.Units.Find(x => x.DisplayPricing >= from && x.DisplayPricing <= to).ToListAsync();
+        }
+
+        public async Task UpdateUnitVisibilty(string id, bool newVisibilty)
+        {
+            var filter = Builders<UnitEntity>.Filter.Eq(x => x.Id, id);
+
+            var update = Builders<UnitEntity>.Update.Set(x => x.Show, newVisibilty);
+
+            var result = await _DbContext.Units.UpdateOneAsync(filter, update);
         }
     }
 }
