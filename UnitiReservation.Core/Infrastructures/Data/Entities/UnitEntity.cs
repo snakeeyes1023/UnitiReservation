@@ -37,7 +37,7 @@ namespace UnitiReservation.Core.Infrastructures.Data.Entities
         public bool IsTaxable { get; set; }
 
 
-        [MinLength(1)]
+        [MinLength(1, ErrorMessage = AttributeLocalisation.MINLENGTH)]
         [Required(ErrorMessage = AttributeLocalisation.REQUIRED)]
         public List<UnitType> Tags { get; set; } = new List<UnitType>();
 

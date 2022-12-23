@@ -38,15 +38,17 @@ namespace UnitiReservation.Core.Services.Statistics
             var units = await _DbContext.Units.Find(x => true).ToListAsync();
 
             double averageTimeReservation = 0;
+            double totalCount = 0;
 
-            foreach (var unit in units)
+            foreach (var unit in units.Where(x => x.Reservations.Any()))
             {
                 averageTimeReservation += unit.Reservations.Average(x => x.TotalDays());
+                totalCount++;
             }
 
             return new AverageReservationRange()
             {
-                Days = averageTimeReservation
+                Days = averageTimeReservation / totalCount
             };
         }
     }

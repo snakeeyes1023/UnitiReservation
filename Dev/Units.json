@@ -1,0 +1,68 @@
+[{
+  "_id": {
+    "$oid": "63a5a2b3dc59381e58e7b2a1"
+  },
+  "Name": "Très grand local",
+  "DisplayPricing": "450",
+  "Description": "Parfait pour une petite entreprise.",
+  "Quantity": 4,
+  "IsTaxable": true,
+  "Tags": [
+    0,
+    1
+  ],
+  "Show": false,
+  "Icon": "",
+  "Coordonnee": "",
+  "TotalWatch": 0,
+  "Wishlist": [],
+  "Reservations": [
+    {
+      "_id": null,
+      "Price": "450",
+      "StartDate": {
+        "$date": {
+          "$numberLong": "1670936520000"
+        }
+      },
+      "EndDate": {
+        "$date": {
+          "$numberLong": "1685102520000"
+        }
+      }
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "63a5a6d2596057b362de747c"
+  },
+  "Name": "Petit local",
+  "DisplayPricing": "60",
+  "Description": "Parfait pour entreposage à long terme",
+  "Quantity": 15,
+  "IsTaxable": true,
+  "Tags": [
+    1
+  ],
+  "Show": false,
+  "Icon": "",
+  "Coordonnee": "",
+  "TotalWatch": 0,
+  "Wishlist": [],
+  "Reservations": [
+    {
+      "_id": null,
+      "Price": "60",
+      "StartDate": {
+        "$date": {
+          "$numberLong": "1670331720000"
+        }
+      },
+      "EndDate": {
+        "$date": {
+          "$numberLong": "1706274120000"
+        }
+      }
+    }
+  ]
+}]
